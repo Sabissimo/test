@@ -1,4 +1,4 @@
-# Zabbix 8.0 Deployment — 50 Switches + 10 Firewalls
+# Zabbix Deployment — 50 Switches + 10 Firewalls
 
 Sizing, configuration, and best-practice setup for monitoring:
 
@@ -7,7 +7,13 @@ Sizing, configuration, and best-practice setup for monitoring:
 - **All ports monitored** on all switches, but **alerts/emails only for trunks/uplinks** plus CPU, memory, fans, PSU, temperature
 - Metric history **and** device syslog kept for **1 month**
 
-Platform: Ubuntu + MySQL 8.x + Zabbix 8.0.
+Platform: Ubuntu Server 24.04 LTS + MySQL 8.x + **Zabbix 7.0 LTS** (the
+current recommended production version — 8.0 is still in beta as of Aug 2026;
+everything here works identically on both).
+
+**Building a fresh VM? Start with [`INSTALL.md`](INSTALL.md)** — full
+step-by-step including how to disable automatic updates so MySQL/Zabbix never
+restart without your explicit command. Ongoing care: [`MAINTENANCE.md`](MAINTENANCE.md).
 
 ---
 
