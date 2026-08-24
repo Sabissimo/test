@@ -1,0 +1,20 @@
+# /etc/logrotate.d/network-syslog
+# Keep exactly 31 daily rotations of network device syslog = 1 month.
+# Older files are deleted automatically. Compressed, so 60 devices
+# typically consume only a few GB total.
+
+/var/log/network/*.log {
+    daily
+    rotate 31
+    maxage 31
+    compress
+    delaycompress
+    missingok
+    notifempty
+    dateext
+    su syslog adm
+    create 0640 syslog adm
+    postrotate
+        /usr/lib/rsyslog/rsyslog-rotate
+    endscript
+}

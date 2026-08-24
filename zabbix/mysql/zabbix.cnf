@@ -1,0 +1,58 @@
+# /etc/mysql/mysql.conf.d/zabbix.cnf
+# MySQL 8.x tuning for Zabbix 8.0
+# Host: 16 GB RAM shared with Zabbix server + web frontend, SSD storage.
+# Drop this file in and restart mysql - it overrides the Ubuntu defaults.
+
+[mysqld]
+
+############ MEMORY ############
+
+# The most important setting. ~40% of RAM when MySQL shares the box
+# with Zabbix. If you ever move MySQL to its own machine, raise to ~70%.
+innodb_buffer_pool_size = 6G
+
+# Split the pool to reduce mutex contention (1 instance per GB is fine)
+innodb_buffer_pool_instances = 6
+
+# Per-connection temp tables for the frontend's graph queries
+tmp_table_size = 96M
+max_heap_table_size = 96M
+
+############ WRITE PERFORMANCE ############
+
+# Flush redo log to disk once per second instead of on every commit.
+# Worst case on power loss: ~1 second of metric data - acceptable for
+# monitoring, and it massively reduces fsync load at 200 NVPS.
+innodb_flush_log_at_trx_commit = 2
+
+# Bypass the OS page cache; data is already cached in the buffer pool
+innodb_flush_method = O_DIRECT
+
+# Redo log sized so bursts (housekeeper deletes, discovery runs) don't
+# force aggressive checkpointing. MySQL 8.0.30+ setting; on older 8.0
+# use innodb_log_file_size = 1G instead.
+innodb_redo_log_capacity = 2G
+
+# SSD-appropriate background I/O rates
+innodb_io_capacity = 2000
+innodb_io_capacity_max = 4000
+
+# No replication on this box: binary logging would double write I/O
+# and consume disk for nothing.
+disable-log-bin
+
+############ CONNECTIONS ############
+
+# Zabbix server processes (pollers+syncers+...) + frontend + headroom.
+max_connections = 301
+
+# Don't do reverse-DNS on connections
+skip-name-resolve
+
+table_open_cache = 4096
+open_files_limit = 65535
+
+############ CHARSET (Zabbix 8.0 requires utf8mb4) ############
+
+character-set-server = utf8mb4
+collation-server = utf8mb4_bin
