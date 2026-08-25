@@ -1,0 +1,27 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1360, "h": 760, "title": "Обзор направлений" },
+    { "file": "MinimalLogo.dc.html", "x": 0, "y": 1000, "w": 1240, "h": 900, "title": "1 · Минимализм — логотип" },
+    { "file": "MinimalFeed.dc.html", "x": 1340, "y": 1000, "w": 1080, "h": 1080, "title": "1 · Лента 1080×1080" },
+    { "file": "MinimalStory.dc.html", "x": 2520, "y": 1000, "w": 1080, "h": 1920, "title": "1 · Stories 1080×1920" },
+    { "file": "MinimalTelegram.dc.html", "x": 3700, "y": 1000, "w": 1280, "h": 720, "title": "1 · Telegram 1280×720" },
+    { "file": "MinimalPrint.dc.html", "x": 5080, "y": 1000, "w": 397, "h": 559, "title": "1 · Листовка A6", "print": "fixed" },
+    { "file": "PremiumLogo.dc.html", "x": 0, "y": 3140, "w": 1240, "h": 900, "title": "2 · Тёплый премиум — логотип" },
+    { "file": "PremiumFeed.dc.html", "x": 1340, "y": 3140, "w": 1080, "h": 1080, "title": "2 · Лента 1080×1080" },
+    { "file": "PremiumStory.dc.html", "x": 2520, "y": 3140, "w": 1080, "h": 1920, "title": "2 · Stories 1080×1920" },
+    { "file": "PremiumTelegram.dc.html", "x": 3700, "y": 3140, "w": 1280, "h": 720, "title": "2 · Telegram 1280×720" },
+    { "file": "PremiumPrint.dc.html", "x": 5080, "y": 3140, "w": 397, "h": 559, "title": "2 · Листовка A6", "print": "fixed" },
+    { "file": "EnergyLogo.dc.html", "x": 0, "y": 5280, "w": 1240, "h": 900, "title": "3 · Энергичный — логотип" },
+    { "file": "EnergyFeed.dc.html", "x": 1340, "y": 5280, "w": 1080, "h": 1080, "title": "3 · Лента 1080×1080" },
+    { "file": "EnergyStory.dc.html", "x": 2520, "y": 5280, "w": 1080, "h": 1920, "title": "3 · Stories 1080×1920" },
+    { "file": "EnergyTelegram.dc.html", "x": 3700, "y": 5280, "w": 1280, "h": 720, "title": "3 · Telegram 1280×720" },
+    { "file": "EnergyPrint.dc.html", "x": 5080, "y": 5280, "w": 397, "h": 559, "title": "3 · Листовка A6", "print": "fixed" }
+  ],
+  "annotations": [
+    { "id": "note-intro", "x": 1450, "y": 120, "w": 320, "text": "Черновики по брифу. Выбираем одно направление из трёх — дальше дорабатываем только его: реальные фото, рабочие QR, экспорт в финальные размеры.\nВ каждом баннере: место под фото, заголовок, QR/ссылка. Текст в [скобках] — плейсхолдеры." },
+    { "id": "note-row-minimal", "x": 0, "y": 880, "w": 300, "text": "Ряд 1 · Минимализм — знак «пересечение»: ты + знакомые лица" },
+    { "id": "note-row-premium", "x": 0, "y": 3020, "w": 300, "text": "Ряд 2 · Тёплый премиум — знак «место за столом»" },
+    { "id": "note-row-energy", "x": 0, "y": 5160, "w": 300, "text": "Ряд 3 · Энергичный — знак «искра», прямой ход от смысла названия" }
+  ],
+  "launch": { "view": "canvas" }
+}
