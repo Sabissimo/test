@@ -23,17 +23,6 @@
 #define USB_CHECK_SEC   1.0        /* how often presence is re-checked while copying */
 #endif
 
-static const char *
-usb_mount_dir(void) {
-#ifdef BACKUP_HOST_TEST
-  const char *dir = getenv("TEST_MOUNT_DIR");
-  if(dir && *dir) {
-    return dir;
-  }
-#endif
-  return USB_MOUNT_DIR;
-}
-
 static char g_usb_root[PATH_MAX];     /* e.g. /mnt/usb2; empty until selected */
 static char g_conf_path[PATH_MAX];    /* <usb>/backup.conf */
 static char g_backup_root[PATH_MAX];  /* <usb>/backup */
@@ -87,8 +76,8 @@ usb_list_mounts(usb_mount_t *mounts, int max) {
   int n = 0;
   DIR *dir;
 
-  if(!(dir = opendir(usb_mount_dir()))) {
-    logq("Cannot list %s (%s); probing %s0..%s%d", usb_mount_dir(), strerror(errno),
+  if(!(dir = opendir(USB_MOUNT_DIR))) {
+    logq("Cannot list %s (%s); probing %s0..%s%d", USB_MOUNT_DIR, strerror(errno),
          USB_NAME_PREFIX, USB_NAME_PREFIX, USB_PROBE_MAX - 1);
     for(int i = 0; i < USB_PROBE_MAX && n < max; i++, n++) {
       snprintf(mounts[n].name, sizeof mounts[n].name, "%s%d", USB_NAME_PREFIX, i);
@@ -118,8 +107,8 @@ usb_list_mounts(usb_mount_t *mounts, int max) {
 
 /* A mount point is only usable if it is a directory with a file system of
  * its own (an unmounted /mnt/usbN is a plain folder on internal storage) and
- * backup.conf in its root is a readable regular file. The host test uses
- * plain directories, so the mount check is skipped there. */
+ * backup.conf in its root is a readable regular file. A host test with plain
+ * directories (BACKUP_HOST_TEST) skips the mount check. */
 static int
 usb_conf_present(const char *root, const struct stat *parent, struct stat *st) {
   char conf[PATH_MAX];
@@ -208,18 +197,18 @@ usb_select(void) {
   int n;
 
   logq("Scanning USB devices...");
-  if(stat(usb_mount_dir(), &parent)) {
+  if(stat(USB_MOUNT_DIR, &parent)) {
     memset(&parent, 0, sizeof parent);
   }
   n = usb_list_mounts(mounts, MAX_USB_MOUNTS);
   if(n == 0) {
-    logq("No %s<N> mount points found below %s", USB_NAME_PREFIX, usb_mount_dir());
+    logq("No %s<N> mount points found below %s", USB_NAME_PREFIX, USB_MOUNT_DIR);
   }
 
   for(int i = 0; i < n; i++) {
     char root[PATH_MAX];
 
-    if(snprintf(root, sizeof root, "%s/%s", usb_mount_dir(), mounts[i].name) >=
+    if(snprintf(root, sizeof root, "%s/%s", USB_MOUNT_DIR, mounts[i].name) >=
        (int)sizeof root) {
       continue;
     }
@@ -302,7 +291,7 @@ usb_cycle_begin(void) {
   if(!g_usb_root[0]) {
     return 0;
   }
-  if(stat(usb_mount_dir(), &parent)) {
+  if(stat(USB_MOUNT_DIR, &parent)) {
     memset(&parent, 0, sizeof parent);
   }
   if(stat(g_usb_root, &st) || !S_ISDIR(st.st_mode)

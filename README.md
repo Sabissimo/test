@@ -17,17 +17,17 @@ The USB partition is found automatically: PS5Save scans `/mnt/usb0`, `/mnt/usb1`
 
 Startup log (klog), for example:
 ```
-[PS5Save] Scanning USB devices...
-[PS5Save] Checking /mnt/usb0
-[PS5Save] Checking /mnt/usb0/backup.conf ... NOT FOUND
-[PS5Save] Checking /mnt/usb1
-[PS5Save] Checking /mnt/usb1 ... not mounted
-[PS5Save] Checking /mnt/usb2
-[PS5Save] Checking /mnt/usb2/backup.conf ... FOUND
-[PS5Save] Found backup.conf
-[PS5Save] Selected USB: /mnt/usb2
-[PS5Save] Backup destination: /mnt/usb2/backup
-[PS5Save] Starting backup service...
+[backup] Scanning USB devices...
+[backup] Checking /mnt/usb0
+[backup] Checking /mnt/usb0/backup.conf ... NOT FOUND
+[backup] Checking /mnt/usb1
+[backup] Checking /mnt/usb1 ... not mounted
+[backup] Checking /mnt/usb2
+[backup] Checking /mnt/usb2/backup.conf ... FOUND
+[backup] Found backup.conf
+[backup] Selected USB: /mnt/usb2
+[backup] Backup destination: /mnt/usb2/backup
+[backup] Starting backup service...
 ```
 
 PS4/PS5 saves will backed up while in-game except for the game you're currently playing it will be backed up after you exit the title *(since version v2)*
@@ -110,12 +110,3 @@ make clean
 make
 ```
 
-## Testing
-
-The USB detection can be exercised on a Linux host without a console or the SDK (clang required). `main.c` is built with `-DBACKUP_HOST_TEST` against stubbed PS5 APIs (`tests/host/`), and `tests/usb_detection.sh` runs the scenarios below with fake mount points under `tests/run/mnt/usb<N>`:
-
-```sh
-make test
-```
-
-Covered: configuration on usb0, usb1, usb2 and usb10 (numeric order), several partitions with only one `backup.conf`, several partitions with a `backup.conf` (lowest number wins), no configuration at all, a read-only partition, a USB unplugged while the payload runs (and another USB appearing meanwhile), and backup sources that contain the destination (`/`, `/mnt`, the USB itself, `..` paths, an alias mount of the USB). The read-only and unplug scenarios use real tmpfs mounts and therefore need root; run `VERBOSE=1 make test` to print the payload log of a failed check.

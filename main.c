@@ -434,9 +434,9 @@ logq(const char *fmt, ...) {
   vsnprintf(msg, sizeof msg, fmt, ap);
   va_end(ap);
 
-  printf("[PS5Save] %s\n", msg);
+  printf("%s\n", msg);
   fflush(stdout);
-  klog_printf("[PS5Save] %s\n", msg);
+  klog_printf("[backup] %s\n", msg);
 }
 
 
@@ -697,14 +697,6 @@ backup_file(const char *src, const char *dst, const struct stat *st,
     stats->failed++;
     return;
   }
-
-#ifdef BACKUP_HOST_TEST
-  /* the host test can slow copying down to unplug the USB mid-pass */
-  const char *delay = getenv("TEST_COPY_DELAY_MS");
-  if(delay && atoi(delay) > 0) {
-    usleep((useconds_t)atoi(delay) * 1000);
-  }
-#endif
 
   tmp[0] = 0;
   if(snprintf(tmp, sizeof tmp, "%s.part", dst) >= (int)sizeof tmp) {
