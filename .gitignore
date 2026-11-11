@@ -34,3 +34,8 @@ Icon
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes
+
+# Build output
+backup.elf
+tests/host/backup_host_test
+tests/run/
